@@ -126,7 +126,7 @@ if prompt := st.chat_input("Ask about rashi, kundli, muhurat..."):
             from groq import Groq
             client = Groq(api_key=st.secrets["GROQ_API_KEY"])
             res = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="llama-3.1-8b-instant",
                 messages=[{"role": "system", "content": "You are Jyotish AI by Arpita, warm expert in Vedic astrology. Answer in simple Hindi-English mix."}] + st.session_state.messages,
             )
             reply = res.choices[0].message.content

@@ -127,7 +127,8 @@ if prompt := st.chat_input("Ask about rashi, kundli, muhurat..."):
             client = Groq(api_key=st.secrets["GROQ_API_KEY"])
             res = client.chat.completions.create(
                 model="openai/gpt-oss-20b",
-                messages=[{"role": "system", "content": "You are Jyotish AI by Arpita, warm expert in Vedic astrology. Answer in simple Hindi-English mix."}] + st.session_state.messages,
+                messages=[{"role": "system", "content": "You are Jyotish AI, expert in Vedic astrology. Answer short, simple."}] + st.session_state.messages[-4:],
+max_tokens=800,
             )
             reply = res.choices[0].message.content
             st.markdown(reply)

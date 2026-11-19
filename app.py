@@ -106,3 +106,31 @@ if st.button("Ask"):
 
 # ============ 7. BOTTOM AD (Revenue) ============
 st.markdown(f"""<div style='background:#E8F5E9;padding:10px;text-align:center;border-radius:10px'>📢 Advertisement Slot 2 - AdSense / Affiliate | {T['disclaimer']}</div>""", unsafe_allow_html=True)
+# --- AI Jyotish Chat ---
+st.divider()
+st.header("💬 Ask Jyotish AI")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for m in st.session_state.messages:
+    with st.chat_message(m["role"]):
+        st.markdown(m["content"])
+
+if prompt := st.chat_input("Ask about rashi, kundli, muhurat..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    with st.chat_message("assistant"):
+        try:
+            from groq import Groq
+            client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+            res = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "system", "content": "You are Jyotish AI by Arpita, warm expert in Vedic astrology. Answer in simple Hindi-English mix."}] + st.session_state.messages,
+            )
+            reply = res.choices[0].message.content
+            st.markdown(reply)
+            st.session_state.messages.append({"role": "assistant", "content": reply})
+        except Exception as e:
+            st.error("AI is sleeping. Try again in 1 min.")

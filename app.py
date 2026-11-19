@@ -133,4 +133,4 @@ if prompt := st.chat_input("Ask about rashi, kundli, muhurat..."):
             st.markdown(reply)
             st.session_state.messages.append({"role": "assistant", "content": reply})
         except Exception as e:
-            st.error("AI is sleeping. Try again in 1 min.")
+            st.error(f"Real Error: {e}")
